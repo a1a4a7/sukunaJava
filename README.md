@@ -12,3 +12,6 @@ chmod +x create_directories.sh
 
 
 ### mvn clean install
+
+### spring cloud config server
+- dynamic config server
