@@ -1,20 +1,39 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/xsd/maven-4.0.0.xsd http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.domain.expansion</groupId>
     <artifactId>Sukuna</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>Sukuna</name>
     <description>Demo project for Spring Boot</description>
+
+    <modules>
+        <module>config-server</module>
+        <module>auth-service</module>
+        <module>api-gateway-service</module>
+        <module>communications-service</module>
+        <module>cicd-service</module>
+        <module>db-cache-service</module>
+        <module>docs-testing-service</module>
+        <module>exception-service</module>
+        <module>monitoring-logs-service</module>
+        <module>message-queue-service</module>
+    </modules>
+
     <properties>
         <java.version>17</java.version>
     </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -26,6 +45,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -44,7 +64,21 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>

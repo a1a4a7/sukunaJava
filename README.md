@@ -11,7 +11,14 @@ chmod +x create_directories.sh
 ./create_directories.sh
 
 
-### mvn clean install
+### mvn clean install  
+- (compile /target)
+- artifect -> jar ~/.m2/repository
+- 
+### vs. reload maven project 
+- intellj reload pom 
+- download dep, rebuild paths
+
 
 ### spring cloud config server
 - dynamic config server
