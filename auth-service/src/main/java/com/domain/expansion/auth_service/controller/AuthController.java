@@ -31,4 +31,9 @@ public class AuthController {
             return ResponseEntity.status(401).body("Login failed");
         }
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Test successful");
+    }
 }
