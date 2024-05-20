@@ -28,6 +28,18 @@ services:
     networks:
       - sukuna_network
 
+  eureka-server:
+    image: a1a4a7/my-eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - sukuna_network
+    environment:
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: 'false'
+      EUREKA_CLIENT_FETCH_REGISTRY: 'false'
+      EUREKA_SERVER_WAIT_TIME_IN_MS_WHEN_SYNC_EMPTY: 0
+
   db-cache-service:
     build:
       context: ./db-cache-service
@@ -36,6 +48,9 @@ services:
       - "8081:8081"
     networks:
       - sukuna_network
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_PROFILES_ACTIVE: docker
 
   auth-service:
     build:
@@ -44,10 +59,12 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      db-cache-service:
-        condition: service_started
+      - db-cache-service
     networks:
       - sukuna_network
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_PROFILES_ACTIVE: docker
 
 volumes:
   mysql-data:

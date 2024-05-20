@@ -29,3 +29,10 @@ chmod +x create_directories.sh
 ### mysql redis dockerize
 - restart
 - SSL=false ? **online resource worked**
+- Sukuna % docker network inspect sukuna_network
+
+
+### build eureka 
+- ./mvnw clean package
+- docker build -t my-eureka-server .
+- docker push a1a4a7/my-eureka-server:latest
