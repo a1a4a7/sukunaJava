@@ -1,38 +1,34 @@
 package com.domain.expansion.db_cache_service.service;
 
-import com.domain.expansion.db_cache_service.model.User;
-import com.domain.expansion.db_cache_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.retry.support.RetryTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private StringRedisTemplate redisTemplate;
 
-    @Autowired
-    private RetryTemplate retryTemplate;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public List<User> findAll() {
-        return retryTemplate.execute(context -> userRepository.findAll());
-    }
+    public String getUserInfo(String username) {
+        // 从Redis缓存中获取用户信息
+        String userInfo = redisTemplate.opsForValue().get(username);
 
-    public User findByUsername(String username) {
-        return retryTemplate.execute(context -> userRepository.findByUsername(username));
-    }
+        if (userInfo == null) {
+            // 如果缓存未命中，从数据库中查询
+            userInfo = entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", String.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+            // 将结果存入Redis缓存
+            redisTemplate.opsForValue().set(username, userInfo);
+        }
 
-    public User save(User user) {
-        return retryTemplate.execute(context -> userRepository.save(user));
-    }
-
-    public void deleteById(Long id) {
-        retryTemplate.execute(context -> {
-            userRepository.deleteById(id);
-            return null;
-        });
+        return userInfo;
     }
 }

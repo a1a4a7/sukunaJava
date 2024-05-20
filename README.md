@@ -36,3 +36,10 @@ chmod +x create_directories.sh
 - ./mvnw clean package
 - docker build -t my-eureka-server .
 - docker push a1a4a7/my-eureka-server:latest
+
+### JWT login
+- auth -> db-service -> eureka -> db -> cache
+- (tbd)gateway -> frontend
+
+### enter mysql-docker
+- docker exec -it mysql-container mysql -u your_username -p

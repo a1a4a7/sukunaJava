@@ -1,39 +1,43 @@
 package com.domain.expansion.auth_service.controller;
 
-import com.domain.expansion.auth_service.model.User;
-import com.domain.expansion.auth_service.service.UserService;
+import com.domain.expansion.auth_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
-    private UserService userService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private JwtUtil jwtUtil;
 
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.saveUser(user));
-    }
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user) {
-        User foundUser = userService.findByUsername(user.getUsername());
-        if (foundUser != null && passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
-            // 这里应该返回JWT令牌
-            return ResponseEntity.ok("Login successful");
+    public String login(@RequestParam String username, @RequestParam String password) {
+        // 验证用户名和密码
+        if (authenticate(username, password)) {
+            String token = jwtUtil.generateToken(username);
+            // 将token存储到Redis中（例如设置10小时的有效期）
+            redisTemplate.opsForValue().set(token, username, 10, TimeUnit.HOURS);
+            return token;
         } else {
-            return ResponseEntity.status(401).body("Login failed");
+            throw new RuntimeException("Invalid credentials");
         }
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Test successful");
+    @GetMapping("/validate")
+    public boolean validateToken(@RequestParam String token) {
+        String username = redisTemplate.opsForValue().get(token);
+        return username != null && jwtUtil.validateToken(token, username);
+    }
+
+    private boolean authenticate(String username, String password) {
+        // 假设这里是验证逻辑
+        return "user".equals(username) && "password".equals(password);
     }
 }

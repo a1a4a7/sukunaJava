@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   mysql:
@@ -14,6 +13,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - sukuna_network
 
@@ -45,7 +45,7 @@ services:
       context: ./db-cache-service
     container_name: db-cache-service
     ports:
-      - "8081:8081"
+      - "9005:9005"
     networks:
       - sukuna_network
     environment:
@@ -57,7 +57,7 @@ services:
       context: ./auth-service
     container_name: auth-service
     ports:
-      - "8080:8080"
+      - "9004:9004"
     depends_on:
       - db-cache-service
     networks:
