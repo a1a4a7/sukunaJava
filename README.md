@@ -22,3 +22,10 @@ chmod +x create_directories.sh
 
 ### spring cloud config server
 - dynamic config server
+
+### (mysql) (redis) docker-compose up -d
+- -detach run in background
+
+### mysql redis dockerize
+- restart
+- SSL=false ? **online resource worked**

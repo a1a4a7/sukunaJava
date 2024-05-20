@@ -2,12 +2,12 @@ package com.domain.expansion.db_cache_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.retry.annotation.EnableRetry;
 
 @SpringBootApplication
-@EnableDiscoveryClient
-public class Db_cache_serviceApplication {
+@EnableRetry
+public class DbCacheServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Db_cache_serviceApplication.class, args);
+        SpringApplication.run(DbCacheServiceApplication.class, args);
     }
 }
