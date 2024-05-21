@@ -43,3 +43,9 @@ chmod +x create_directories.sh
 
 ### enter mysql-docker
 - docker exec -it mysql-container mysql -u your_username -p
+
+
+### auth JWT
+
+### dump containers
+docker-compose down -v

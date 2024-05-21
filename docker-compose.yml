@@ -13,8 +13,8 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - "mysql-data:/var/lib/mysql"
-      - "./init.sql:/docker-entrypoint-initdb.d/1.sql"
+      - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/1.sql
     networks:
       - sukuna_network
 
@@ -32,6 +32,7 @@ services:
   eureka-server:
     image: a1a4a7/my-eureka-server
     container_name: eureka-server
+    restart: unless-stopped
     ports:
       - "8761:8761"
     networks:
@@ -44,6 +45,7 @@ services:
   db-cache-service:
     build: ./db-cache-service
     container_name: db-cache-service
+    restart: unless-stopped
     ports:
       - "8081:8081"
     networks:
@@ -55,19 +57,35 @@ services:
   auth-service:
     build: ./auth-service
     container_name: auth-service
+    restart: unless-stopped
     ports:
       - "9004:9004"
     depends_on:
       - db-cache-service
+      - eureka-server
+      - mysql
+      - redis
     networks:
       - sukuna_network
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
       SPRING_PROFILES_ACTIVE: docker
 
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    container_name: redis-insight
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    volumes:
+      - redis-insight:/data
+    networks:
+      - sukuna_network
+
 volumes:
   mysql-data:
   redis-data:
+  redis-insight:
 
 networks:
   sukuna_network:
