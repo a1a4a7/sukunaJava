@@ -19,10 +19,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
-        // 验证用户名和密码
         if (authenticate(username, password)) {
             String token = jwtUtil.generateToken(username);
-            // 将token存储到Redis中（例如设置10小时的有效期）
             redisTemplate.opsForValue().set(token, username, 10, TimeUnit.HOURS);
             return token;
         } else {
@@ -39,5 +37,11 @@ public class AuthController {
     private boolean authenticate(String username, String password) {
         // 假设这里是验证逻辑
         return "user".equals(username) && "password".equals(password);
+    }
+
+    // 添加测试路由
+    @GetMapping("/test")
+    public String test() {
+        return "Auth service is working!";
     }
 }
