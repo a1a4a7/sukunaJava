@@ -15,12 +15,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // 禁用CSRF
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth/login", "/auth/validate", "/auth/test").permitAll() // 允许未认证用户访问 /auth/login 和 /auth/validate
+                                .requestMatchers("/auth/login", "/auth/validate", "/auth/test", "/auth/call-db-cache-service").permitAll() // 允许未认证用户访问 /auth/login 和 /auth/validate
                                 .anyRequest().authenticated()
-                );
+                )
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/auth/login", "/auth/validate")); // 忽略对这些路径的CSRF保护
         return http.build();
     }
 

@@ -3,7 +3,10 @@ package com.domain.expansion.auth_service.controller;
 import com.domain.expansion.auth_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,21 +20,33 @@ public class AuthController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         if (authenticate(username, password)) {
             String token = jwtUtil.generateToken(username);
             redisTemplate.opsForValue().set(token, username, 10, TimeUnit.HOURS);
-            return token;
+            return ResponseEntity.ok(token);
         } else {
-            throw new RuntimeException("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid credentials");
         }
     }
 
     @GetMapping("/validate")
-    public boolean validateToken(@RequestParam String token) {
+    public ResponseEntity<Boolean> validateToken(@RequestParam String token) {
         String username = redisTemplate.opsForValue().get(token);
-        return username != null && jwtUtil.validateToken(token, username);
+        boolean isValid = username != null && jwtUtil.validateToken(token, username);
+        return ResponseEntity.ok(isValid);
+    }
+
+    // 示例：调用另一个微服务
+    @GetMapping("/call-db-cache-service")
+    public ResponseEntity<String> callOtherService() {
+        String serviceUrl = "http://db-cache-service/api/resource";  // 使用服务名称而不是具体的 URL
+        String response = restTemplate.getForObject(serviceUrl, String.class);
+        return ResponseEntity.ok(response);
     }
 
     private boolean authenticate(String username, String password) {

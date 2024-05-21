@@ -45,7 +45,22 @@ chmod +x create_directories.sh
 - docker exec -it mysql-container mysql -u your_username -p
 
 
-### auth JWT
-
+### auth JWT + sessionCookie
+- spring security
 ### dump containers
 docker-compose down -v
+
+
+
+
+# TODOs
+- [] eureka access url | load balancer
+- [] api gateway
+- [] message queue
+- [] k8s
+- [] testing
+
+
+# improvements
+- [] session cookie
+- [] 
