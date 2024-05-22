@@ -59,6 +59,7 @@ docker-compose down -v
 - [] message queue
 - [] k8s
 - [] testing
+- [] AWS
 
 
 # improvements
