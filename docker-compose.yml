@@ -71,6 +71,22 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
       SPRING_PROFILES_ACTIVE: docker
 
+  api-gateway-service:
+    build: ./api-gateway-service
+    container_name: api-gateway-service
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    depends_on:
+      - eureka-server
+      - auth-service
+      - db-cache-service
+    networks:
+      - sukuna_network
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_PROFILES_ACTIVE: docker
+
   redisinsight:
     image: redislabs/redisinsight:latest
     container_name: redis-insight

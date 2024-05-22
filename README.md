@@ -54,14 +54,14 @@ docker-compose down -v
 
 
 # TODOs
-- [] eureka access url | load balancer
+- [x] eureka access url | load balancer
 - [] api gateway
 - [] message queue
-- [] k8s
+- [] k8s - lb(ingress)
 - [] testing
 - [] AWS
 
 
 # improvements
 - [] session cookie
-- [] 
+- [] enforce api gateway access only
