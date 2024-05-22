@@ -50,6 +50,11 @@ chmod +x create_directories.sh
 ### dump containers
 docker-compose down -v
 
+### enter kafka log
+- docker exec -it kafka /bin/bash
+- cd /var/lib/kafka/logs
+- ls -l
+
 
 
 

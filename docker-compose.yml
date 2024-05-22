@@ -86,15 +86,18 @@ services:
       SPRING_PROFILES_ACTIVE: docker
 
   zookeeper:
-    image: wurstmeister/zookeeper  # 使用较新的版本
+    image: zookeeper:3.6
     container_name: zookeeper
     ports:
       - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
       - sukuna_network
 
+
   kafka:
-    image: confluentinc/cp-kafka:7.0.1
+    image: bitnami/kafka:latest
     container_name: kafka
     ports:
       - "9092:9092"
