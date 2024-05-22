@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // 禁用CSRF保护
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth/login", "/auth/validate", "/auth/test", "/auth/call-db-cache-service").permitAll() // 允许未认证用户访问 /auth/login 和 /auth/validate
+                                .requestMatchers("/auth/send", "/auth/login", "/auth/validate", "/auth/test", "/auth/call-db-cache-service").permitAll() // 允许未认证用户访问 /auth/login 和 /auth/validate
                                 .anyRequest().authenticated()
                 );
         return http.build();

@@ -55,8 +55,9 @@ docker-compose down -v
 
 # TODOs
 - [x] eureka access url | load balancer
-- [] api gateway
-- [] message queue
+- [x] api gateway
+- [x] message queue
+  - [] use case - db / redis- frontned
 - [] k8s - lb(ingress)
 - [] testing
 - [] AWS

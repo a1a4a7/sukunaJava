@@ -1,5 +1,6 @@
 package com.domain.expansion.auth_service.controller;
 
+import com.domain.expansion.auth_service.service.MessageSenderService;
 import com.domain.expansion.auth_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -22,6 +23,15 @@ public class AuthController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private MessageSenderService messageSenderService;
+
+    @GetMapping("/send")
+    public String sendMessage() {
+        messageSenderService.sendMessage("Hello from Auth Service");
+        return "Message sent!";
+    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {

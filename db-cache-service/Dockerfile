@@ -1,4 +1,14 @@
+# Use the official OpenJDK image as the base image
 FROM openjdk:17-jdk-slim
-VOLUME /tmp
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the application JAR file into the container
 COPY target/db-cache-service-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+# Expose the port the application runs on
+EXPOSE 8081
+
+# Run the JAR file
+ENTRYPOINT ["java", "-jar", "app.jar"]
