@@ -62,7 +62,7 @@ docker-compose down -v
 - [x] eureka access url | load balancer
 - [x] api gateway
 - [x] message queue
-  - [] use case - db / redis- frontned
+  - [x] use case - db / redis- frontned
 - [] k8s - lb(ingress)
 - [] testing
 - [] AWS
@@ -71,8 +71,8 @@ docker-compose down -v
 # improvements
 - [] session cookie
 - [] enforce api gateway access only
-- [] workflow
+- [x] workflow
   - [x] /auth -> return jwt
-  - [] order / payment -> Kafka <- MsgQ Server
-    - -> DB service -> redis /db
-  - 
+  - [x] order -> Kafka <- MsgQ Server 
+  - [x] ->  DB service -> redis /db
+     
