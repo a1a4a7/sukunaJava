@@ -1,5 +1,7 @@
 package com.domain.expansion.auth_service.controller;
 
+import com.domain.expansion.auth_service.model.LoginRequest;
+import com.domain.expansion.auth_service.service.AuthService;
 import com.domain.expansion.auth_service.service.MessageSenderService;
 import com.domain.expansion.auth_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    @Autowired
+    private AuthService authService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -34,12 +39,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        if (authenticate(username, password)) {
-            String token = jwtUtil.generateToken(username);
-            redisTemplate.opsForValue().set(token, username, 10, TimeUnit.HOURS);
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            String token = authService.login(loginRequest);
+            redisTemplate.opsForValue().set(token, loginRequest.getUsername(), 10, TimeUnit.HOURS);
             return ResponseEntity.ok(token);
-        } else {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid credentials");
         }
     }
@@ -57,11 +62,6 @@ public class AuthController {
         String serviceUrl = "http://db-cache-service/api/resource";  // 使用服务名称而不是具体的 URL
         String response = restTemplate.getForObject(serviceUrl, String.class);
         return ResponseEntity.ok(response);
-    }
-
-    private boolean authenticate(String username, String password) {
-        // 假设这里是验证逻辑
-        return "user".equals(username) && "password".equals(password);
     }
 
     // 添加测试路由

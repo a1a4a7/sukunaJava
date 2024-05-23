@@ -28,6 +28,8 @@
         <module>exception-service</module>
         <module>monitoring-logs-service</module>
         <module>message-queue-service</module>
+        <module>order-service</module>
+        <module>payment-service</module>
     </modules>
 
     <properties>

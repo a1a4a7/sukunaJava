@@ -95,7 +95,6 @@ services:
     networks:
       - sukuna_network
 
-
   kafka:
     image: bitnami/kafka:latest
     container_name: kafka
@@ -116,6 +115,24 @@ services:
     restart: unless-stopped
     networks:
       - sukuna_network
+    depends_on:
+      - kafka
+      - mysql
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    restart: unless-stopped
+    ports:
+      - "9001:9001"
+    networks:
+      - sukuna_network
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - kafka
+      - mysql
 
 volumes:
   mysql-data:

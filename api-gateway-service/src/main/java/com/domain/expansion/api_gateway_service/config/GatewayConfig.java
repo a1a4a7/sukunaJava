@@ -15,6 +15,8 @@ public class GatewayConfig {
                         .uri("lb://auth-service"))
                 .route("db-cache-service", r -> r.path("/db/**")
                         .uri("lb://db-cache-service"))
+                .route("order-service", r -> r.path("/order/**")
+                        .uri("lb://order-service"))
                 .build();
     }
 }

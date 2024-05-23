@@ -71,3 +71,8 @@ docker-compose down -v
 # improvements
 - [] session cookie
 - [] enforce api gateway access only
+- [] workflow
+  - [x] /auth -> return jwt
+  - [] order / payment -> Kafka <- MsgQ Server
+    - -> DB service -> redis /db
+  - 

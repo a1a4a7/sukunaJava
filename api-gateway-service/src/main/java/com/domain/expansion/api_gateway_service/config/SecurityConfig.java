@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // 禁用CSRF保护
                 .authorizeExchange(authorizeExchange ->
                         authorizeExchange
-                                .pathMatchers("/auth/send", "/auth/login", "/auth/validate", "/auth/test", "/auth/call-db-cache-service").permitAll() // 允许未认证用户访问这些路径
+                                .pathMatchers("/order/", "/auth/send", "/auth/login", "/auth/validate", "/auth/test", "/auth/call-db-cache-service").permitAll() // 允许未认证用户访问这些路径
                                 .anyExchange().authenticated()
                 )
                 .httpBasic();
