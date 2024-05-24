@@ -63,16 +63,18 @@ docker-compose down -v
 - [x] api gateway
 - [x] message queue
   - [x] use case - db / redis- frontned
-- [] k8s - lb(ingress)
-- [] testing
+  - - [x] workflow
+  - [x] /auth -> return jwt
+  - [x] order -> Kafka <- MsgQ Server
+  - [x] ->  DB service -> redis /db
+-[x] junit + mockito
+  - mvn clean test
+- [] k8s - lb(ingress) - small k8s and deploy
 - [] AWS
 
 
 # improvements
 - [] session cookie
 - [] enforce api gateway access only
-- [x] workflow
-  - [x] /auth -> return jwt
-  - [x] order -> Kafka <- MsgQ Server 
-  - [x] ->  DB service -> redis /db
+- actutor on /auth/actuator/health, security allow
      
